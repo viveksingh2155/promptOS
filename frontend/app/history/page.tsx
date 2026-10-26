@@ -51,7 +51,7 @@ function OutputModal({ item, onClose }: { item: HistoryItem; onClose: () => void
         background: 'rgba(0,0,0,0.75)',
         backdropFilter: 'blur(12px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 24,
+        padding: '16px',
       }}
     >
       <motion.div
@@ -244,7 +244,7 @@ function HistoryCard({ item, index }: { item: HistoryItem; index: number }) {
                 </div>
 
                 {devMode && (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 14 }}>
+                  <div className="responsive-grid" style={{ marginBottom: 14 }}>
                     {[
                       { icon: Zap, label: 'Latency', val: formatTime(item.latency) },
                       { label: 'Tokens', val: String(item.tokenCount) },
@@ -258,11 +258,11 @@ function HistoryCard({ item, index }: { item: HistoryItem; index: number }) {
                   </div>
                 )}
 
-                <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   <motion.button
                     whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}
                     className="btn btn-secondary"
-                    style={{ flex: 1, height: 40, fontSize: 14, borderRadius: 10 }}
+                    style={{ flex: '1 1 140px', minHeight: 44, fontSize: 14, borderRadius: 10 }}
                     onClick={() => setShowModal(true)}
                   >
                     <Eye size={13} /> View Output
@@ -271,7 +271,7 @@ function HistoryCard({ item, index }: { item: HistoryItem; index: number }) {
                     whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}
                     onClick={() => { setPrompt(item.originalPrompt); setWorkspaceState('typing'); router.push('/'); }}
                     className="btn btn-primary"
-                    style={{ flex: 1, height: 40, fontSize: 14, borderRadius: 100 }}
+                    style={{ flex: '1 1 140px', minHeight: 44, fontSize: 14, borderRadius: 100 }}
                   >
                     <Play size={13} /> Re-run
                   </motion.button>
@@ -312,7 +312,7 @@ export default function HistoryPage() {
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.3, ease }}
-      style={{ minHeight: 'calc(100vh - 48px)', padding: '60px 32px' }}
+      style={{ minHeight: 'calc(100vh - 48px)', padding: '40px 16px 60px' }}
     >
       <div style={{ maxWidth: 760, margin: '0 auto' }}>
 
@@ -321,7 +321,7 @@ export default function HistoryPage() {
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 340, damping: 30 }}
-          style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 40, flexWrap: 'wrap', gap: 16 }}
+          style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap', gap: 16 }}
         >
           <div>
             <h1 className="text-display" style={{ marginBottom: 8 }}>
@@ -332,7 +332,7 @@ export default function HistoryPage() {
             </p>
           </div>
 
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '220px' }}>
             <Search size={13} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'rgba(245,245,247,0.35)', pointerEvents: 'none' }} />
             <input
               type="text"
@@ -340,10 +340,10 @@ export default function HistoryPage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               style={{
-                paddingLeft: 36, paddingRight: 14, height: 40, borderRadius: 10,
+                paddingLeft: 36, paddingRight: 14, height: 44, borderRadius: 10,
                 background: 'rgba(255,255,255,0.05)', border: '1.5px solid rgba(255,255,255,0.1)',
-                color: '#f5f5f7', fontSize: 14, outline: 'none', fontFamily: 'inherit',
-                width: 220, transition: 'border-color 0.2s, box-shadow 0.2s', letterSpacing: '-0.016em',
+                color: '#f5f5f7', fontSize: 'max(16px, 14px)', outline: 'none', fontFamily: 'inherit',
+                width: '100%', transition: 'border-color 0.2s, box-shadow 0.2s', letterSpacing: '-0.016em',
               }}
               onFocus={e => { e.target.style.borderColor = 'rgba(0,113,227,0.6)'; e.target.style.boxShadow = '0 0 0 3px rgba(0,113,227,0.12)'; }}
               onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.boxShadow = 'none'; }}

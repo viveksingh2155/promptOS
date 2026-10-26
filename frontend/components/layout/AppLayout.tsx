@@ -38,9 +38,11 @@ function AppContent({ children }: { children: React.ReactNode }) {
           {devMode && <Sidebar key="sidebar" />}
         </AnimatePresence>
         <motion.main
-          animate={{ marginLeft: devMode ? 220 : 0 }}
+          animate={{ 
+            marginLeft: devMode ? (typeof window !== 'undefined' && window.innerWidth >= 1024 ? 220 : 0) : 0 
+          }}
           transition={{ type: 'spring' as const, stiffness: 320, damping: 32, mass: 0.8 }}
-          style={{ flex: 1, minWidth: 0 }}
+          style={{ flex: 1, minWidth: 0, width: '100%', overflowX: 'hidden' }}
         >
           {children}
         </motion.main>

@@ -97,7 +97,11 @@ export default function PipelineView() {
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#33334a', marginBottom: 14 }}>
         Execution Pipeline
       </p>
-      <div style={{ display: 'flex', gap: 10 }}>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', 
+        gap: 10 
+      }}>
         {pipelineStatus.steps.map((step, i) => (
           <PipeCard key={step.id} step={step} index={i} />
         ))}

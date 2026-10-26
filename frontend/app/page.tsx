@@ -104,7 +104,7 @@ export default function WorkspacePage() {
         <div style={{
           flex: 1, display: 'flex', flexDirection: 'column',
           maxWidth: 800, margin: '0 auto', width: '100%',
-          padding: '0 32px 80px',
+          padding: '0 16px 60px',
           paddingTop: isEmptyOrTyping ? 96 : 56,
         }}>
 
@@ -124,7 +124,7 @@ export default function WorkspacePage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: .06, duration: .5, ease }}
                   className="text-hero"
-                  style={{ marginBottom: 16 }}
+                  style={{ marginBottom: 16, whiteSpace: 'pre-wrap' }}
                 >
                   {devMode ? 'What are we\noptimizing?' : 'Illuminated\nPrecision.'}
                 </motion.h1>
@@ -233,7 +233,7 @@ export default function WorkspacePage() {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: .2 }}
-                    style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}
+                    className="responsive-grid"
                   >
                     <div className="apple-card" style={{ padding: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
                       <p className="text-label text-tertiary" style={{ marginBottom: 12 }}>Prompt Score</p>

@@ -74,7 +74,7 @@ function TemplateCard({ t, onUse, i }: { t: Template; onUse: (t: Template) => vo
           whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
           onClick={() => onUse(t)}
           style={{
-            width: '100%', height: 40, borderRadius: 12, border: '1px solid rgba(255,255,255,0.07)',
+            width: '100%', height: 44, borderRadius: 12, border: '1px solid rgba(255,255,255,0.07)',
             background: 'rgba(255,255,255,.05)', color: 'rgba(245,245,247,.65)',
             fontSize: 14, fontWeight: 400, cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
@@ -116,10 +116,10 @@ export default function TemplatesPage() {
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ minHeight: 'calc(100vh - 56px)', padding: '60px 40px' }}
+      style={{ minHeight: 'calc(100vh - 56px)', padding: '40px 16px 60px' }}
     >
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: -14 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 40 }}>
+        <motion.div initial={{ opacity: 0, y: -14 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 32 }}>
           <h1 className="text-display" style={{ marginBottom: 10 }}>Templates</h1>
           <p className="text-body text-muted" style={{ maxWidth: 520, lineHeight: 1.65 }}>
             Accelerate your workflow with production-ready prompt architectures engineered for clarity and performance.
@@ -129,13 +129,14 @@ export default function TemplatesPage() {
         {/* Category pills */}
         <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 36 }}
+          style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 28 }}
         >
           {CATS.map(c => (
             <motion.button
               key={c} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
               onClick={() => setCat(c)}
               className={`cat-pill ${cat === c ? 'active' : ''}`}
+              style={{ minHeight: 44 }}
             >
               {c.charAt(0).toUpperCase() + c.slice(1)}
             </motion.button>
@@ -147,7 +148,11 @@ export default function TemplatesPage() {
           <motion.div
             key={cat}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 18 }}
+            style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', 
+              gap: 18 
+            }}
           >
             {filtered.map((t, i) => (
               <TemplateCard key={t.id} t={t} onUse={handleUse} i={i} />

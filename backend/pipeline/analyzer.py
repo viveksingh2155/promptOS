@@ -1,8 +1,13 @@
+import os
 import ollama
 import json
 import re
 import asyncio
 from pipeline.language import build_language_instruction
+
+# Configure Ollama client with environment variable
+OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+OLLAMA_CLIENT = ollama.Client(host=OLLAMA_BASE_URL)
 
 ANALYZER_SYSTEM = """You are an expert prompt analyzer. Your job is to analyze a user's raw prompt and extract structured metadata.
 Return ONLY valid JSON with this exact structure:
@@ -17,8 +22,11 @@ Return ONLY valid JSON with this exact structure:
 """
 
 def _call_ollama(model: str, messages: list, temperature: float = 0.1) -> str:
-    response = ollama.chat(model=model, messages=messages, options={"temperature": temperature})
-    return response["message"]["content"].strip()
+    try:
+        response = OLLAMA_CLIENT.chat(model=model, messages=messages, options={"temperature": temperature})
+        return response["message"]["content"].strip()
+    except Exception as e:
+        raise ConnectionError(f"Ollama connection failed at {OLLAMA_BASE_URL}. Ensure Ollama is running and accessible. Error: {str(e)}")
 
 async def analyze(prompt: str, model: str = "llama3.1", target_lang: str = "original") -> dict:
     try:
@@ -31,5 +39,7 @@ async def analyze(prompt: str, model: str = "llama3.1", target_lang: str = "orig
         )
         json_match = re.search(r'\{.*\}', content, re.DOTALL)
         return json.loads(json_match.group()) if json_match else {}
+    except ConnectionError:
+        raise
     except Exception as e:
         return {"error": str(e)}

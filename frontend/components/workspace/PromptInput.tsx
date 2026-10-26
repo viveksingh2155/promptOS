@@ -66,6 +66,7 @@ export default function PromptInput({ onOptimize, isFocused, setIsFocused }: Pro
           className="prompt-textarea"
           disabled={isProcessing}
           spellCheck={false}
+          style={{ fontSize: 'max(16px, 17px)' }} // Prevent iOS zoom
         />
       </div>
 
@@ -76,10 +77,12 @@ export default function PromptInput({ onOptimize, isFocused, setIsFocused }: Pro
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '10px 16px 14px',
+        flexWrap: 'wrap',
+        gap: 10,
       }}>
         {/* Format pills + Language select — left side */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap' }}>
             {FORMATS.map((f) => (
               <motion.button
                 key={f.id}
@@ -110,7 +113,7 @@ export default function PromptInput({ onOptimize, isFocused, setIsFocused }: Pro
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {devMode && wordCount > 0 && (
-            <span style={{
+            <span className="hide-mobile" style={{
               fontSize: 12, fontFamily: 'JetBrains Mono, monospace',
               color: 'rgba(255,255,255,0.3)', letterSpacing: '-0.12px',
             }}>
@@ -123,6 +126,7 @@ export default function PromptInput({ onOptimize, isFocused, setIsFocused }: Pro
               onClick={() => setPrompt('')}
               className="btn-icon btn"
               title="Clear"
+              style={{ minWidth: 40, minHeight: 40 }}
             >
               <Trash2 size={12} />
             </motion.button>
@@ -133,10 +137,10 @@ export default function PromptInput({ onOptimize, isFocused, setIsFocused }: Pro
             onClick={onOptimize}
             disabled={!prompt.trim() || isProcessing}
             className="btn btn-primary"
-            style={{ height: 40, gap: 7, paddingLeft: 18, paddingRight: 20 }}
+            style={{ height: 44, gap: 7, paddingLeft: 18, paddingRight: 20, minWidth: 'fit-content' }}
           >
             <Sparkles size={13} />
-            Optimize
+            <span className="hide-mobile">Optimize</span>
           </motion.button>
         </div>
       </div>

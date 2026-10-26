@@ -97,9 +97,9 @@ export default function SettingsPage() {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease }}
-      style={{ minHeight: 'calc(100vh - 48px)', padding: '56px 32px' }}
+      style={{ minHeight: 'calc(100vh - 48px)', padding: '40px 16px 60px' }}
     >
-      <div style={{ maxWidth: 640, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 40 }}>
+      <div style={{ maxWidth: 640, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 32 }}>
 
         {/* Page header */}
         <div>
@@ -113,7 +113,7 @@ export default function SettingsPage() {
         <div>
           <SectionHeader title="Account" />
           <Card>
-            <div style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                 {user?.avatar ? (
                   <img src={user.avatar} alt={user.displayName}
@@ -128,14 +128,14 @@ export default function SettingsPage() {
                     {user?.displayName?.charAt(0)?.toUpperCase() ?? 'J'}
                   </div>
                 )}
-                <div>
-                  <p style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-.022em', marginBottom: 3 }}>
+                <div style={{ minWidth: 0 }}>
+                  <p style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-.022em', marginBottom: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {user?.displayName ?? 'John Wick'}
                   </p>
-                  <p className="text-caption text-tertiary">{user?.email ?? 'john.wick@promptos.io'}</p>
+                  <p className="text-caption text-tertiary" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.email ?? 'john.wick@promptos.io'}</p>
                 </div>
               </div>
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: .97 }} className="btn btn-ghost" style={{ height: 38, fontSize: 14 }}>
+              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: .97 }} className="btn btn-ghost" style={{ height: 38, fontSize: 14, minHeight: 44 }}>
                 <Edit size={13} /> Edit
               </motion.button>
             </div>
@@ -267,21 +267,22 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
                 <div style={{
-                  flex: 1, display: 'flex', alignItems: 'center', gap: 10,
+                  flex: '1 1 200px', display: 'flex', alignItems: 'center', gap: 10,
                   padding: '10px 14px', borderRadius: 11,
                   background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)',
                   fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: 'rgba(245,245,247,.5)',
+                  minWidth: 0,
                 }}>
                   <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {showKey ? key : '•'.repeat(40)}
                   </span>
-                  <button onClick={() => setShowKey(s => !s)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(245,245,247,.4)', display: 'flex', padding: 2 }}>
+                  <button onClick={() => setShowKey(s => !s)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(245,245,247,.4)', display: 'flex', padding: 2, minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' }}>
                     {showKey ? <EyeOff size={13} /> : <Eye size={13} />}
                   </button>
                 </div>
-                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: .97 }} onClick={handleCopy} className="btn btn-ghost" style={{ height: 42, gap: 5, fontSize: 14 }}>
+                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: .97 }} onClick={handleCopy} className="btn btn-ghost" style={{ height: 44, gap: 5, fontSize: 14, flex: '1 1 100px' }}>
                   {copied ? <Check size={13} style={{ color: '#30d158' }} /> : <Copy size={13} />}
                   {copied ? 'Copied!' : 'Copy'}
                 </motion.button>

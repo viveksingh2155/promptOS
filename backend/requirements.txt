@@ -8,3 +8,4 @@ sse-starlette
 python-multipart
 aiofiles
 langdetect
+psycopg2-binary

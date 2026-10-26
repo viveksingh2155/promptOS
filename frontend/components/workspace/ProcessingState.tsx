@@ -24,9 +24,9 @@ export default function ProcessingState({ onCancel }: { onCancel: () => void }) 
       style={{ display: 'flex', flexDirection: 'column', gap: 18 }}
     >
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+        <div style={{ flex: '1 1 200px', minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
             <motion.span
               animate={{ opacity: [1, 0.3, 1] }}
               transition={{ repeat: Infinity, duration: 1.2 }}
@@ -83,7 +83,7 @@ export default function ProcessingState({ onCancel }: { onCancel: () => void }) 
       </motion.div>
 
       {/* Metric cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+      <div className="responsive-grid">
         {METRICS.map(({ label, icon: Icon }, i) => {
           const p = processingProgress;
           const started = p > i * 28;
@@ -98,7 +98,7 @@ export default function ProcessingState({ onCancel }: { onCancel: () => void }) 
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.08 }}
               className="metric-card"
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 80 }}
             >
               <div>
                 <p style={{ fontSize: 11, color: '#44445a', marginBottom: 4 }}>{label}</p>
@@ -138,10 +138,11 @@ export default function ProcessingState({ onCancel }: { onCancel: () => void }) 
           whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
           onClick={onCancel}
           className="btn btn-secondary"
-          style={{ borderRadius: 100 }}
+          style={{ borderRadius: 100, minHeight: 44 }}
         >
           <XCircle size={14} />
-          Cancel Optimization
+          <span className="hide-mobile">Cancel Optimization</span>
+          <span className="hide-desktop">Cancel</span>
         </motion.button>
       </div>
     </motion.div>

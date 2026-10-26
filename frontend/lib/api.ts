@@ -1,6 +1,7 @@
 import type { Format, OptimizedResult, HistoryItem, Template, PipelineStep } from '@/types';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// Use environment variable for API base URL, with localhost fallback for development
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
 
 export type PipelineEvent =
   | { type: 'step_start'; step: PipelineStep['id']; timestamp: number }
@@ -25,7 +26,10 @@ export async function optimizePrompt(
     signal,
   });
 
-  if (!response.ok) throw new Error(`API error: ${response.status}`);
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => 'Unknown error');
+    throw new Error(`API error ${response.status}: ${errorText}`);
+  }
 
   const reader = response.body?.getReader();
   if (!reader) throw new Error('No response body');
@@ -33,34 +37,40 @@ export async function optimizePrompt(
   const decoder = new TextDecoder();
   let buffer = '';
 
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split('\n');
-    buffer = lines.pop() || '';
-    for (const line of lines) {
-      if (line.startsWith('data: ')) {
-        try {
-          const data = JSON.parse(line.slice(6));
-          onEvent(data as PipelineEvent);
-        } catch { /* ignore */ }
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          try {
+            const data = JSON.parse(line.slice(6));
+            onEvent(data as PipelineEvent);
+          } catch (e) {
+            console.warn('Failed to parse SSE data:', line, e);
+          }
+        }
       }
     }
+  } finally {
+    reader.releaseLock();
   }
 }
 
 export async function getHistory(search?: string): Promise<HistoryItem[]> {
   const params = search ? `?search=${encodeURIComponent(search)}` : '';
   const res = await fetch(`${API_BASE}/api/history${params}`);
-  if (!res.ok) throw new Error('Failed to fetch history');
+  if (!res.ok) throw new Error(`Failed to fetch history: ${res.status}`);
   return res.json();
 }
 
 export async function getTemplates(category?: string): Promise<Template[]> {
   const params = category && category !== 'all' ? `?category=${category}` : '';
   const res = await fetch(`${API_BASE}/api/templates${params}`);
-  if (!res.ok) throw new Error('Failed to fetch templates');
+  if (!res.ok) throw new Error(`Failed to fetch templates: ${res.status}`);
   return res.json();
 }
 

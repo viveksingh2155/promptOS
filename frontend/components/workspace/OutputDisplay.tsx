@@ -103,6 +103,8 @@ export default function OutputDisplay() {
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '16px 18px', borderBottom: '1px solid rgba(255,255,255,0.05)',
+          flexWrap: 'wrap',
+          gap: 12,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
@@ -114,18 +116,18 @@ export default function OutputDisplay() {
               <h3 style={{ fontSize: 15, fontWeight: 700, color: '#eeeeff', marginBottom: 1 }}>Optimized Output</h3>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             {[
               { icon: copied ? Check : Copy, label: copied ? 'Copied!' : 'Copy', action: handleCopy },
-              { icon: Edit3, label: 'Edit', action: undefined },
-              { icon: Download, label: 'Export', action: handleExport },
-            ].map(({ icon: Icon, label, action }) => (
+              { icon: Edit3, label: 'Edit', action: undefined, hideOnMobile: true },
+              { icon: Download, label: 'Export', action: handleExport, hideOnMobile: false },
+            ].map(({ icon: Icon, label, action, hideOnMobile }) => (
               <motion.button
                 key={label}
                 whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.95 }}
                 onClick={action}
-                className="btn btn-secondary"
-                style={{ height: 32, fontSize: 12, borderRadius: 8, padding: '0 12px' }}
+                className={`btn btn-secondary ${hideOnMobile ? 'hide-mobile' : ''}`}
+                style={{ height: 32, fontSize: 12, borderRadius: 8, padding: '0 12px', minHeight: 44 }}
               >
                 <Icon size={12} />
                 {label}
@@ -168,8 +170,10 @@ export default function OutputDisplay() {
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '12px 18px', borderTop: '1px solid rgba(255,255,255,0.05)',
+          flexWrap: 'wrap',
+          gap: 12,
         }}>
-          <div style={{ display: 'flex', gap: 20, fontSize: 12, color: '#44445a' }}>
+          <div style={{ display: 'flex', gap: 20, fontSize: 12, color: '#44445a', flexWrap: 'wrap' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#a78bfa', display: 'inline-block' }} />
               {formatNumber(tokenCount)} Tokens
@@ -179,7 +183,7 @@ export default function OutputDisplay() {
               {formatTime(generationTime)} Generation
             </span>
             {(optimizedResult.detectedLanguage || optimizedResult.targetLanguage) && (
-              <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 5 }} className="hide-mobile">
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#2997ff', display: 'inline-block' }} />
                 Language: {optimizedResult.detectedLanguage || 'Auto'}
                 {optimizedResult.targetLanguage && optimizedResult.targetLanguage !== 'original' && ` → ${optimizedResult.targetLanguage.charAt(0).toUpperCase() + optimizedResult.targetLanguage.slice(1)}`}
